@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TD Evolved</title>
+    <!-- Utilities -->
+    <script type="text/javascript" src="~/Models/Utils/Config.js"></script>
+    <!-- Controllers -->
+    <script type="text/javascript" src="~/Controller/AppController.js"></script>
+    <script type="text/javascript" src="~/Controller/CanvasController.js"></script>
+    <script type="text/javascript" src="~/Controller/UIController.js"></script>
+    <script type="text/javascript" src="~/Controller/WorldController.js"></script>
+    <!-- Models -->
+    <script type="text/javascript" src="~/Models/Graphics/Shape.js"></script>
+    <script type="text/javascript" src="~/Models/Entities/WorldObject.js"></script>
+    <script type="text/javascript" src="~/Models/Entities/Agent.js"></script>
+    <script type="text/javascript" src="~/Models/Entities/Turret.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: monospace, sans-serif;
+        }
+
+        body::before, body::after {
+            content:"";
+            position: fixed;
+            display: block;
+            left: 0;
+            width: 100%;
+            height: 10%;
+            background: #111;
+            box-shadow: 0 0 10pt #000;
+        }
+
+        body::before {
+            top: 0;
+            background: linear-gradient(to left bottom, #444, #000);
+        }
+
+        body::after {
+            bottom: 0;
+            background: linear-gradient(to right top, #444, #000);
+        }
+
+        #canvasContainer {
+            position: absolute;
+            z-index: -1;
+            top: 10%;
+            bottom: 10%;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: antiquewhite;
+        }
+        
+        #canvas {
+            height: 100%;
+            width: 100%;
+        }
+
+        #Overframe {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            /*background: rgba(0,0,0,0.3);*/
+        }
+
+        #Menu {
+            box-shadow: 0 0 15pt #000;
+            border: 1px solid #000;
+            background: antiquewhite;
+            border-radius: 10px;
+            margin: 0 auto;
+            padding: 20px 50px;
+            font-size: 2em;
+        }
+
+        .menu_option {
+            cursor: pointer;
+        }
+        
+        .menu_option::after,.menu_option::before {
+            color: transparent;
+        }
+
+        .menu_option::after {
+            content: "<<";
+            margin-left: 10px;
+        }
+        .menu_option::before {
+            content: ">>";
+            margin-right: 10px;
+        }
+        
+        .menu_option:hover::after,.menu_option:hover::before {
+            color: black;
+        }
+
+        #console {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            background: #FFF;
+            padding: 5px;
+        }
+
+        .console_line::before {
+            content: attr("title");
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvasContainer">
+        <canvas id="canvas"></canvas>
+    </div>
+    <div id="Overframe">
+        <div id="Menu" style="display:none">
+            <div id="Start">
+                <div class="menu_option">Start</div>
+            </div>
+        </div>
+        <div id="console">
+            <div id="fps" class="console_line" title="FPS"></div>
+        </div>
+    </div>
+</body>
+</html>
