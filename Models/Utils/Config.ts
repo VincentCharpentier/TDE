@@ -5,7 +5,7 @@
     }
 
     public static World = {
-        // Item max width 
+        // Item max width
         ITEM_MAX_WIDTH: 50,
         Map: {
             SIZE: 1000

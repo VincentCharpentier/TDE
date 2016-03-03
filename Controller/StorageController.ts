@@ -22,4 +22,3 @@ class StorageController {
         return JSON.parse(localStorage.getItem(this.GetKey(key)));
     }
 }
-

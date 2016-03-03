@@ -9,7 +9,7 @@ abstract class WorldObject {
         this.shape = new FullShape();
         this.SetupShape();
     }
-    
+
     abstract SetupShape(): void;
 
     Draw(ctx: CanvasRenderingContext2D) {
@@ -102,7 +102,7 @@ class CollisionHelper {
                     // LEFT
                     if (cirle.coord.y + cirle.bbox._radius < rect.coord.y + rect.bbox._width / 2) {
                         // TOP - LEFT
-                        corner = 
+                        corner =
                     } else {
                         // BOTTOM - LEFT
                     }

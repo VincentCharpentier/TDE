@@ -21,11 +21,10 @@ class AppController {
             );
             WorldController.RegisterObject(t);
         }
-        
     }
 
     /**
-     * 
+     *
      * @param dt time elasped since last tick (ms)
      */
     public static Tick() {

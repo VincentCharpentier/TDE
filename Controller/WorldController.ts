@@ -34,6 +34,6 @@ class WorldController {
         });
         // TODO : only item in area
         //subset.map((item) => {});
-        return 
+        return
     }
 }

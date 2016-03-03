@@ -1,0 +1,13 @@
+{
+  "compileOnSave": true,
+  "__":"FILES TO EXCLUDE FROM COMPILATION",
+  "exclude":[],
+  "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outDir": "js",
+        "sourceMap": true
+    }
+}
