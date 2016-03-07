@@ -9,6 +9,12 @@
         this.shape.AddShape(body);
     }
 
+    Tick(dt: number): void
+    {
+
+    }
+
+
     Think(): void
     {
 

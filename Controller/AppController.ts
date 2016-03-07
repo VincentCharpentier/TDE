@@ -14,6 +14,7 @@ class AppController
         CanvasController.Init();
         UIController.Init();
         InputController.Init();
+        WorldController.Init();
         this._targetDelta = 1000 / Config.View.MAX_FPS;
         this.Tick();
 

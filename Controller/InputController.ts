@@ -17,6 +17,10 @@ enum ACTION
     PLAYER_MOVE_DOWN,
     PLAYER_MOVE_LEFT,
     PLAYER_MOVE_RIGHT,
+    PLAYER_STOP_UP,
+    PLAYER_STOP_DOWN,
+    PLAYER_STOP_LEFT,
+    PLAYER_STOP_RIGHT,
     // PLAYER IS ABOUT TO ATTACK (ex: bow aiming)
     PLAYER_PRE_ATTACK,
     // PLAYER SHOOT
@@ -32,9 +36,9 @@ class InputController
     // KEY => ACTIONS
     private static key_map: { [key: number]: Array<ACTION> } = {};
     // ACTION => INPUT_TYPE
-    private static action_input_mode: { [key: number]: INPUT_MODE } = {};
+    private static action_input_mode: { [action: number]: INPUT_MODE } = {};
     // ACTION => Function
-    private static action_handler: { [key: number]: Function } = {};
+    private static action_handler: { [action: number]: Function } = {};
 
     private constructor() { }
 
@@ -86,7 +90,17 @@ class InputController
             }
         }
 
-        // TODO : PUT ACTION HANDLERS
+
+        InputController.action_handler[ACTION.PLAYER_MOVE_UP] =
+            () => { WorldController.player.MoveUp() };
+        InputController.action_handler[ACTION.PLAYER_MOVE_DOWN] =
+            () => { WorldController.player.MoveDown() };
+        InputController.action_handler[ACTION.PLAYER_MOVE_LEFT] =
+            () => { WorldController.player.MoveLeft() };
+        InputController.action_handler[ACTION.PLAYER_MOVE_RIGHT] =
+            () => { console.log("test"); WorldController.player.MoveRight() };
+        // TODO : PUT OTHER ACTION HANDLERS
+
     }
 
 

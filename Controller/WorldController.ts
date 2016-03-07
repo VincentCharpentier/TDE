@@ -4,6 +4,14 @@ class WorldController
     // TODO: needs to be private
     public static objects: Array<WorldObject> = [];
     private static agents: Array<Agent> = [];
+    public static player: Player;
+
+    public static Init()
+    {
+        // TODO : trouver une façon de permettre la création de plusieurs
+        // joueurs
+        WorldController.player = new Player(true);
+    }
 
     public static RegisterObject(obj: WorldObject): void
     {

@@ -31,6 +31,11 @@ class Ennemy extends Agent
 
     }
 
+    Tick(dt: number): void
+    {
+
+    }
+
     public Think()
     {
 
