@@ -1,15 +1,17 @@
-﻿abstract class Agent extends WorldObject {
+﻿abstract class Agent extends WorldObject
+{
+    protected _canThink = true;
     /**
      * Agent consider what action it should take
      */
     public abstract Think(): void;
-
-    private _canThink = true;
-    public BeforeAct() {
+    public BeforeAct()
+    {
         if (this._canThink) {
             this.Think();
             this._canThink = false;
-            setTimeout(() => {
+            setTimeout(() =>
+            {
                 this._canThink = true;
             }, Config.Agent.THINK_DELAY);
         }
@@ -22,16 +24,20 @@
 }
 
 
-class Ennemy extends Agent {
-    public SetupShape() {
+class Ennemy extends Agent
+{
+    public SetupShape()
+    {
 
     }
 
-    public Think() {
+    public Think()
+    {
 
     }
 
-    public Act() {
+    public Act()
+    {
 
     }
 }

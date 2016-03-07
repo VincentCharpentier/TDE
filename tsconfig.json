@@ -9,5 +9,22 @@
         "preserveConstEnums": true,
         "outDir": "js",
         "sourceMap": true
+    },
+    "atom": {
+      "formatOnSave": true
+    },
+    "formatCodeOptions": {
+        "indentSize": 4,
+        "tabSize": 4,
+        "newLineCharacter": "\n",
+        "convertTabsToSpaces": true,
+        "insertSpaceAfterCommaDelimiter": true,
+        "insertSpaceAfterSemicolonInForStatements": true,
+        "insertSpaceBeforeAndAfterBinaryOperators": true,
+        "insertSpaceAfterKeywordsInControlFlowStatements": true,
+        "insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+        "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
+        "placeOpenBraceOnNewLineForFunctions": true,
+        "placeOpenBraceOnNewLineForControlBlocks": false
     }
 }

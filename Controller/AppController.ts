@@ -2,12 +2,15 @@
 console.log("%cAlways avoid to copy / paste code from unknown source", "font-size:1.4em;");
 
 
-window.addEventListener("load", function () {
+window.addEventListener("load", function()
+{
     AppController.Init();
 });
 
-class AppController {
-    public static Init() {
+class AppController
+{
+    public static Init()
+    {
         CanvasController.Init();
         UIController.Init();
         this._targetDelta = 1000 / Config.View.MAX_FPS;
@@ -27,7 +30,8 @@ class AppController {
      *
      * @param dt time elasped since last tick (ms)
      */
-    public static Tick() {
+    public static Tick()
+    {
         var dt = new Date().getTime() - this._lastTick;
 
         var delay = 0;
@@ -35,7 +39,8 @@ class AppController {
             delay = this._targetDelta - dt;
         }
 
-        setTimeout(() => {
+        setTimeout(() =>
+        {
             this._lastTick = new Date().getTime();
             CanvasController.Draw();
             this.Tick();

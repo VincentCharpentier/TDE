@@ -1,4 +1,5 @@
-﻿class Config {
+﻿class Config
+{
     public static View = {
         MAX_FPS: 60, // s
         UI_REFRESH_SPEED: 0.5, // s

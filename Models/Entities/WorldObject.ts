@@ -1,60 +1,72 @@
-﻿
-abstract class WorldObject {
+
+abstract class WorldObject
+{
     public coord: Coord;
     public rotation: number;
     protected shape: FullShape;
     public bbox: BBox;
 
-    constructor() {
+    constructor()
+    {
         this.shape = new FullShape();
         this.SetupShape();
     }
 
     abstract SetupShape(): void;
 
-    Draw(ctx: CanvasRenderingContext2D) {
+    Draw(ctx: CanvasRenderingContext2D)
+    {
         this.shape.Draw(ctx, this.coord, this.rotation);
     }
-    /*
-    GetSurroundingObjects(): Array<WorldObject> {
 
+    GetSurroundingObjects(radius: number): Array<WorldObject>
+    {
+        // TODO
+        return [];
     }
-    */
 
-    CollideWithObject(object: WorldObject): boolean {
+
+    CollideWithObject(object: WorldObject): boolean
+    {
         return CollisionHelper.isCollision(this, object);
     }
 }
 
-enum BBox_Type {
+enum BBox_Type
+{
     Circle,
     Rect,
     None
 }
 
-class BBox {
-    type: BBox_Type;
-    public _radius: number;
-    public _width: number;
+class BBox
+{
+    public type: BBox_Type;
+    public _size: number;
 }
 
-class BBox_Factory {
+class BBox_Factory
+{
 }
 
 
-enum Collision_Mode {
+enum Collision_Mode
+{
     None,
     Circle_v_Circle,
     Circle_v_Rect,
     Rect_v_Rect
 }
 
-class CollisionHelper {
-    public static isCollision(obj1: WorldObject, obj2: WorldObject) {
+class CollisionHelper
+{
+    public static isCollision(obj1: WorldObject, obj2: WorldObject)
+    {
         return this.EvalCollision(obj1, obj2);;
     }
 
-    private static GetCollisionMode(obj1: WorldObject, obj2: WorldObject): Collision_Mode {
+    private static GetCollisionMode(obj1: WorldObject, obj2: WorldObject): Collision_Mode
+    {
         if (obj1.bbox.type == BBox_Type.None || obj2.bbox.type == BBox_Type.None) {
             return Collision_Mode.None;
         }
@@ -79,15 +91,16 @@ class CollisionHelper {
         throw "Unable to evaluate collision";
     }
 
-    private static EvalCollision(obj1: WorldObject, obj2: WorldObject): boolean {
+    private static EvalCollision(obj1: WorldObject, obj2: WorldObject): boolean
+    {
         var mode = this.GetCollisionMode(obj1, obj2);
         switch (mode) {
             case Collision_Mode.Circle_v_Circle:
                 var dist = this.DistBeetween(
-                    new Coord((obj1.coord.x + obj1.bbox._radius), (obj1.coord.y + obj1.bbox._radius)),
-                    new Coord((obj2.coord.x + obj2.bbox._radius), (obj2.coord.y + obj2.bbox._radius))
+                    new Coord((obj1.coord.x + obj1.bbox._size), (obj1.coord.y + obj1.bbox._size)),
+                    new Coord((obj2.coord.x + obj2.bbox._size), (obj2.coord.y + obj2.bbox._size))
                 );
-                if (dist < (obj1.bbox._radius + obj2.bbox._radius)) {
+                if (dist < (obj1.bbox._size + obj2.bbox._size)) {
                     return true;
                 }
                 break;
@@ -122,7 +135,8 @@ class CollisionHelper {
         return false;
     }
 
-    private static DistBeetween(pt1: Coord, pt2: Coord): number {
+    private static DistBeetween(pt1: Coord, pt2: Coord): number
+    {
         var dx = Math.abs(pt1.x - pt2.x),
             dy = Math.abs(pt1.y - pt2.y);
         return Math.sqrt(dx * dx + dy * dy);
