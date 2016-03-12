@@ -1,5 +1,5 @@
-﻿console.info("%cCHEATING MAY BREAK YOU GAME", "font: 2em sans-serif; color: red");
-console.log("%cAlways avoid to copy / paste code from unknown source", "font-size:1.4em;");
+﻿console.warn("%cCHEATING MAY BREAK YOU GAME", "font: 2em sans-serif; color: red");
+console.info("%cAlways avoid to copy / paste code from unknown or non trusted sources", "font-size:1.4em;");
 
 
 window.addEventListener("load", function()
@@ -18,13 +18,13 @@ class AppController
         this._targetDelta = 1000 / Config.View.MAX_FPS;
         this.Tick();
 
+        // TODO : REMOVE
         for (var i = 0; i < 3; i++) {
             var t = new Turret();
             t.coord = new Coord(
                 Math.round(Math.random() * CanvasController.viewport.width),
                 Math.round(Math.random() * CanvasController.viewport.height)
             );
-            WorldController.RegisterObject(t);
         }
     }
 

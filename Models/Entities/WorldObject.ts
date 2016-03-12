@@ -1,6 +1,8 @@
 
 abstract class WorldObject
 {
+    private static _nextId = 1;
+    public id: number;
     public coord: Coord;
     public rotation: number;
     protected shape: FullShape;
@@ -9,8 +11,10 @@ abstract class WorldObject
 
     constructor()
     {
+        this.id = WorldObject._nextId++;
         this.shape = new FullShape();
         this.SetupShape();
+        WorldController.RegisterObject(this);
     }
 
     abstract SetupShape(): void;
@@ -18,9 +22,9 @@ abstract class WorldObject
     // dt: time since last frame
     abstract Tick(dt: number): void;
 
-    Draw(ctx: CanvasRenderingContext2D)
+    Draw(ctx: CanvasRenderingContext2D, origin: Coord)
     {
-        this.shape.Draw(ctx, this.coord, this.rotation);
+        this.shape.Draw(ctx, origin, this.coord, this.rotation);
     }
 
     GetSurroundingObjects(radius: number): Array<WorldObject>
@@ -34,6 +38,8 @@ abstract class WorldObject
     {
         return CollisionHelper.isCollision(this, object);
     }
+
+    On(event: string): void { }
 }
 
 enum BBox_Type

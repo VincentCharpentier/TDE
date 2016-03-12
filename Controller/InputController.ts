@@ -2,167 +2,24 @@ window.addEventListener("keydown", function(ev: KeyboardEvent)
 {
     // transfert l'event à InputController
     InputController.OnKeyDown(ev);
+    var letItGo = InputController.TryPreventDefault(ev);
+    if (!letItGo) {
+        ev.preventDefault();
+    }
+    return letItGo;
 });
 window.addEventListener("keyup", function(ev: KeyboardEvent)
 {
     // transfert l'event à InputController
     InputController.OnKeyUp(ev);
+    var letItGo = InputController.TryPreventDefault(ev);
+    if (!letItGo) {
+        ev.preventDefault();
+    }
+    return letItGo;
 });
 
 
-
-enum ACTION
-{
-    PLAYER_MOVE_UP,
-    PLAYER_MOVE_DOWN,
-    PLAYER_MOVE_LEFT,
-    PLAYER_MOVE_RIGHT,
-    PLAYER_STOP_UP,
-    PLAYER_STOP_DOWN,
-    PLAYER_STOP_LEFT,
-    PLAYER_STOP_RIGHT,
-    // PLAYER IS ABOUT TO ATTACK (ex: bow aiming)
-    PLAYER_PRE_ATTACK,
-    // PLAYER SHOOT
-    PLAYER_ATTACK,
-    // USED TO OPEN/CLOSE INVENTORY
-    PLAYER_TOGGLE_INVENTORY,
-    // PLAYER_PREBUILD,
-    // PLAYER_BUILD
-}
-
-class InputController
-{
-    // KEY => ACTIONS
-    private static key_map: { [key: number]: Array<ACTION> } = {};
-    // ACTION => INPUT_TYPE
-    private static action_input_mode: { [action: number]: INPUT_MODE } = {};
-    // ACTION => Function
-    private static action_handler: { [action: number]: Function } = {};
-
-    private constructor() { }
-
-    public static Init(locale: string = "FR")
-    {
-        // KEY INITIAL MAPPING
-        // INIT ALL ARRAYS
-        for (var i in KEY) {
-            var key: KEY = KEY[<string>i];
-            InputController.key_map[key] = new Array();
-        }
-
-        // COMMON CONTROLS
-        InputController.RegisterInputEvent(ACTION.PLAYER_TOGGLE_INVENTORY, KEY.TAB);
-        InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_UP, KEY.UP_ARROW);
-        InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_DOWN, KEY.DOWN_ARROW);
-        InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_LEFT, KEY.LEFT_ARROW);
-        InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_RIGHT, KEY.RIGHT_ARROW);
-        // REGION SPECIFIC CONTROLS
-        switch (locale) {
-            case "FR":
-                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_UP, KEY.Z);
-                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_DOWN, KEY.S);
-                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_LEFT, KEY.Q);
-                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_RIGHT, KEY.D);
-                break;
-            case "EN":
-            default:
-                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_UP, KEY.W);
-                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_DOWN, KEY.S);
-                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_LEFT, KEY.A);
-                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_RIGHT, KEY.D);
-                break;
-        }
-
-        // SET ACTION MODE
-        var input_mode_down = [
-            ACTION.PLAYER_MOVE_UP,
-            ACTION.PLAYER_MOVE_DOWN,
-            ACTION.PLAYER_MOVE_LEFT,
-            ACTION.PLAYER_MOVE_RIGHT
-        ];
-        for (var i in ACTION) {
-            var action: ACTION = ACTION[<string>i];
-            if (input_mode_down.indexOf(action) > -1) {
-                InputController.action_input_mode[action] = INPUT_MODE.KEY_DOWN;
-            } else {
-                InputController.action_input_mode[action] = INPUT_MODE.KEY_UP;
-            }
-        }
-
-
-        InputController.action_handler[ACTION.PLAYER_MOVE_UP] =
-            () => { WorldController.player.MoveUp() };
-        InputController.action_handler[ACTION.PLAYER_MOVE_DOWN] =
-            () => { WorldController.player.MoveDown() };
-        InputController.action_handler[ACTION.PLAYER_MOVE_LEFT] =
-            () => { WorldController.player.MoveLeft() };
-        InputController.action_handler[ACTION.PLAYER_MOVE_RIGHT] =
-            () => { console.log("test"); WorldController.player.MoveRight() };
-        // TODO : PUT OTHER ACTION HANDLERS
-
-    }
-
-
-    static RegisterInputEvent(action: ACTION, key: KEY, oldKey: KEY = null): boolean
-    {
-        if (oldKey !== null) {
-            var i = InputController.key_map[oldKey].indexOf(action);
-            while (i !== -1) {
-                InputController.key_map[oldKey].splice(i, 1);
-                i = InputController.key_map[oldKey].indexOf(action);
-            }
-        }
-        var conflict = InputController.key_map[key].length > 0 ? true : false;
-
-        InputController.key_map[key].push(action);
-
-        return conflict;
-    }
-
-    public static OnKeyDown(ev: KeyboardEvent): void
-    {
-        InputController.EvalInput(ev.which, INPUT_MODE.KEY_DOWN);
-    }
-
-    public static OnKeyUp(ev: KeyboardEvent): void
-    {
-        InputController.EvalInput(ev.which, INPUT_MODE.KEY_DOWN);
-    }
-
-    private static EvalInput(key: KEY, mode: INPUT_MODE)
-    {
-        var actions = InputController.key_map[key];
-        if (actions === undefined) {
-            return;
-        }
-        // IF INPUT KEY VALID
-        // FOR EACH LINKED ACTION
-        for (var i in actions) {
-            var action = actions[i];
-            var expected_mode = InputController.action_input_mode[action];
-            if (expected_mode === undefined) {
-                console.error("No input mode for action : " + action.toString());
-                return;
-            }
-            if (expected_mode !== mode) {
-                return;
-            }
-            // GOOD INPUT MODE
-            var handler = InputController.action_handler[action];
-            if (handler === undefined) {
-                console.error("No handler for action : " + action.toString());
-            }
-            handler();
-        }
-    }
-}
-
-enum INPUT_MODE
-{
-    KEY_DOWN,
-    KEY_UP
-};
 
 
 // KEYCODES (DESCRIPTIVE ENUM)
@@ -268,3 +125,234 @@ enum KEY
     CLOSE_BRAKET = 221,
     SINGLE_QUOTE = 222
 };
+
+
+enum ACTION
+{
+    PLAYER_MOVE_UP,
+    PLAYER_MOVE_DOWN,
+    PLAYER_MOVE_LEFT,
+    PLAYER_MOVE_RIGHT,
+    PLAYER_STOP_UP,
+    PLAYER_STOP_DOWN,
+    PLAYER_STOP_LEFT,
+    PLAYER_STOP_RIGHT,
+    // PLAYER IS ABOUT TO ATTACK (ex: bow aiming)
+    PLAYER_PRE_ATTACK,
+    // PLAYER SHOOT
+    PLAYER_ATTACK,
+    // USED TO OPEN/CLOSE INVENTORY
+    PLAYER_TOGGLE_INVENTORY,
+    // PLAYER_PREBUILD,
+    // PLAYER_BUILD
+}
+
+enum INPUT_MODE
+{
+    KEY_DOWN,
+    KEY_UP
+};
+
+
+class InputController
+{
+    // KEY => ACTIONS
+    private static key_map: { [key: number]: Array<ACTION> } = {};
+    // ACTION => INPUT_TYPE
+    private static action_input_mode: { [action: number]: INPUT_MODE } = {};
+    // ACTION => Function
+    private static action_handler: { [action: number]: Function } = {};
+    // Controle pour eviter la répetition des events keydown
+    private static current_keys_down: { [key: number]: any } = {};
+    // will store WorldObject listening to inputs
+    private static listeners: { [id: number]: WorldObject } = {};
+    // Keys that have a special function in browser that need to be catch
+    private static prevent_defaults: Array<KEY> = new Array(
+        KEY.TAB
+    );
+
+    private constructor() { }
+
+    public static Init(locale: string = "FR")
+    {
+        // KEY INITIAL MAPPING
+        // INIT ALL ARRAYS
+        for (var i in KEY) {
+            var key: KEY = KEY[<string>i];
+            InputController.key_map[key] = new Array();
+        }
+
+        // COMMON CONTROLS
+        InputController.RegisterInputEvent(ACTION.PLAYER_TOGGLE_INVENTORY, KEY.TAB);
+        InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_UP, KEY.UP_ARROW);
+        InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_DOWN, KEY.DOWN_ARROW);
+        InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_LEFT, KEY.LEFT_ARROW);
+        InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_RIGHT, KEY.RIGHT_ARROW);
+        InputController.RegisterInputEvent(ACTION.PLAYER_STOP_UP, KEY.UP_ARROW);
+        InputController.RegisterInputEvent(ACTION.PLAYER_STOP_DOWN, KEY.DOWN_ARROW);
+        InputController.RegisterInputEvent(ACTION.PLAYER_STOP_LEFT, KEY.LEFT_ARROW);
+        InputController.RegisterInputEvent(ACTION.PLAYER_STOP_RIGHT, KEY.RIGHT_ARROW);
+        // REGION SPECIFIC CONTROLS
+        switch (locale) {
+            case "FR":
+                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_UP, KEY.Z);
+                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_DOWN, KEY.S);
+                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_LEFT, KEY.Q);
+                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_RIGHT, KEY.D);
+                InputController.RegisterInputEvent(ACTION.PLAYER_STOP_UP, KEY.Z);
+                InputController.RegisterInputEvent(ACTION.PLAYER_STOP_DOWN, KEY.S);
+                InputController.RegisterInputEvent(ACTION.PLAYER_STOP_LEFT, KEY.Q);
+                InputController.RegisterInputEvent(ACTION.PLAYER_STOP_RIGHT, KEY.D);
+                break;
+            case "EN":
+            default:
+                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_UP, KEY.W);
+                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_DOWN, KEY.S);
+                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_LEFT, KEY.A);
+                InputController.RegisterInputEvent(ACTION.PLAYER_MOVE_RIGHT, KEY.D);
+                InputController.RegisterInputEvent(ACTION.PLAYER_STOP_UP, KEY.W);
+                InputController.RegisterInputEvent(ACTION.PLAYER_STOP_DOWN, KEY.S);
+                InputController.RegisterInputEvent(ACTION.PLAYER_STOP_LEFT, KEY.A);
+                InputController.RegisterInputEvent(ACTION.PLAYER_STOP_RIGHT, KEY.D);
+                break;
+        }
+
+        // SET ACTION MODE
+        var input_mode_down = [
+            // others will be onkeyup
+            ACTION.PLAYER_MOVE_UP,
+            ACTION.PLAYER_MOVE_DOWN,
+            ACTION.PLAYER_MOVE_LEFT,
+            ACTION.PLAYER_MOVE_RIGHT
+        ];
+        for (var i in ACTION) {
+            var action: ACTION = ACTION[<string>i];
+            if (!isNaN(parseInt(action.toString()))) {
+                if (input_mode_down.indexOf(action) > -1) {
+                    InputController.action_input_mode[action] = INPUT_MODE.KEY_DOWN;
+                } else {
+                    InputController.action_input_mode[action] = INPUT_MODE.KEY_UP;
+                }
+            }
+        }
+
+
+        // DEFINE HANDLERS
+        var dispatch = (type: string) =>
+        {
+            return () =>
+            {
+                InputController
+                    .DispatchEvent(type);
+            }
+        };
+
+        // TODO : Tableau d'association
+        InputController.action_handler[ACTION.PLAYER_MOVE_UP] =
+            dispatch("input.player.move.up");
+        InputController.action_handler[ACTION.PLAYER_MOVE_DOWN] =
+            dispatch("input.player.move.down");
+        InputController.action_handler[ACTION.PLAYER_MOVE_LEFT] =
+            dispatch("input.player.move.left");
+        InputController.action_handler[ACTION.PLAYER_MOVE_RIGHT] =
+            dispatch("input.player.move.right");
+        // stops player
+        InputController.action_handler[ACTION.PLAYER_STOP_UP] =
+            dispatch("input.player.stop.up");
+        InputController.action_handler[ACTION.PLAYER_STOP_DOWN] =
+            dispatch("input.player.stop.down");
+        InputController.action_handler[ACTION.PLAYER_STOP_LEFT] =
+            dispatch("input.player.stop.left");
+        InputController.action_handler[ACTION.PLAYER_STOP_RIGHT] =
+            dispatch("input.player.stop.right");
+        // TODO : PUT OTHER ACTION HANDLERS
+
+    }
+
+
+    static RegisterInputEvent(action: ACTION, key: KEY, oldKey: KEY = null): boolean
+    {
+        if (oldKey !== null) {
+            var i = InputController.key_map[oldKey].indexOf(action);
+            while (i !== -1) {
+                InputController.key_map[oldKey].splice(i, 1);
+                i = InputController.key_map[oldKey].indexOf(action);
+            }
+        }
+        var conflict = InputController.key_map[key].length > 0 ? true : false;
+
+        InputController.key_map[key].push(action);
+
+        return conflict;
+    }
+
+    // Recoit les events keydown de l'object window
+    public static OnKeyDown(ev: KeyboardEvent): void
+    {
+        // Controle pour eviter la répetition des events keydown
+        if (InputController.current_keys_down[ev.which]) return;
+        InputController.current_keys_down[ev.which] = true;
+        // Send event key & type
+        InputController.EvalInput(ev.which, INPUT_MODE.KEY_DOWN);
+    }
+
+    public static OnKeyUp(ev: KeyboardEvent): void
+    {
+        // Controle pour eviter la répetition des events keydown
+        delete InputController.current_keys_down[ev.which];
+        // Send event key & type
+        InputController.EvalInput(ev.which, INPUT_MODE.KEY_UP);
+    }
+
+    private static EvalInput(key: KEY, mode: INPUT_MODE)
+    {
+        var actions = InputController.key_map[key];
+        if (actions === undefined) {
+            return;
+        }
+        // IF INPUT KEY VALID
+        // FOR EACH LINKED ACTION
+        for (var i in actions) {
+            var action = actions[i];
+            var expected_mode = InputController.action_input_mode[action];
+            if (expected_mode === undefined) {
+                console.error("No input mode for action : " + action.toString());
+                return;
+            }
+            if (expected_mode !== mode) {
+                continue;
+            }
+            // GOOD INPUT MODE
+            var handler = InputController.action_handler[action];
+            if (handler === undefined) {
+                console.error("No handler for action : " + action.toString());
+            }
+            handler();
+        }
+    }
+
+    static AddEventListener(listener: WorldObject)
+    {
+        InputController.listeners[listener.id] = listener;
+    }
+
+    static RemoveEventListener(listener: WorldObject)
+    {
+        delete InputController.listeners[listener.id];
+    }
+
+    static DispatchEvent(eventType: string)
+    {
+        for (var id in InputController.listeners) {
+            InputController.listeners[id].On(eventType);
+        }
+    }
+
+    static TryPreventDefault(ev: KeyboardEvent)
+    {
+        if (InputController.prevent_defaults.indexOf(ev.which) !== -1) {
+            return false;
+        }
+        return true;
+    }
+}

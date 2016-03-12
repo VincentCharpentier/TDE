@@ -20,8 +20,8 @@
 
     public static Player = {
         SIZE: 10,
-        MAX_SPEED: 5, // px per sec
-        ACCELERATION: 1, // (px per sec) per sec
-        DRAG_FACTOR: 0.5 // [0:1]
+        MAX_SPEED: 2, // px per sec
+        ACCELERATION: 0.4, // (px per sec) per sec
+        DRAG_FACTOR: 0.3 // [0:1]
     };
 }

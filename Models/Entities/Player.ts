@@ -10,11 +10,14 @@ class Player extends WorldObject
     {
         super();
         this.coord = new Coord(
-            Math.round(Config.World.Map.SIZE / 2),
-            Math.round(Config.World.Map.SIZE / 2)
+            Math.round(Math.random() * CanvasController.viewport.width),
+            Math.round(Math.random() * CanvasController.viewport.height)
         );
         this.speed = new Coord(0, 0);
         this._isLocalPlayer = isLocalPlayer_;
+        if (this._isLocalPlayer) {
+            InputController.AddEventListener(this);
+        }
     }
 
     SetupShape(): void
@@ -41,11 +44,19 @@ class Player extends WorldObject
             // re-eval speed
             // 1. apply drag to stop unwanted movements
             if ((this.speed.y < 0 && !this.is_moving.up)
-                || (this.speed.y > 0 && !this.is_moving.up)) {
+                || (this.speed.y > 0 && !this.is_moving.down)) {
                 // up
                 this.speed.y *= Config.Player.DRAG_FACTOR;
                 if (Math.abs(this.speed.y) < 1e-3) {
                     this.speed.y = 0;
+                }
+            }
+            if ((this.speed.x < 0 && !this.is_moving.left)
+                || (this.speed.x > 0 && !this.is_moving.right)) {
+                // up
+                this.speed.x *= Config.Player.DRAG_FACTOR;
+                if (Math.abs(this.speed.x) < 1e-3) {
+                    this.speed.x = 0;
                 }
             }
 
@@ -53,24 +64,25 @@ class Player extends WorldObject
             // 2. consider user input
             if (this.is_moving.up) {
                 this.speed.y -= Config.Player.ACCELERATION;
-                this.speed.y = Math.max(this.speed.y,
-                    -1 * Config.Player.MAX_SPEED);
             }
             if (this.is_moving.down) {
                 this.speed.y += Config.Player.ACCELERATION;
-                this.speed.y = Math.min(this.speed.y, Config.Player.MAX_SPEED);
             }
             if (this.is_moving.left) {
                 this.speed.x -= Config.Player.ACCELERATION;
-                this.speed.x = Math.max(this.speed.x,
-                    -1 * Config.Player.MAX_SPEED);
             }
             if (this.is_moving.right) {
                 this.speed.x += Config.Player.ACCELERATION;
-                this.speed.x = Math.min(this.speed.x, Config.Player.MAX_SPEED);
             }
-            // TODO: Considerer la vitesse maximale par rapport à
-            //       l'ensemble des vitesses (indistinctement)
+
+            // Considerer la vitesse maximale par rapport à
+            // l'ensemble des vitesses (indistinctement)
+            var combinedSpeed = Math.sqrt(this.speed.x * this.speed.x + this.speed.y * this.speed.y);
+            if (combinedSpeed > Config.Player.MAX_SPEED) {
+                var slow_ratio = Config.Player.MAX_SPEED / combinedSpeed;
+                this.speed.x *= slow_ratio;
+                this.speed.y *= slow_ratio;
+            }
 
             // 3. Update coord
             this.coord.x += this.speed.x;
@@ -100,7 +112,6 @@ class Player extends WorldObject
 
     Move(dir: string)
     {
-        console.info("moving " + dir);
         if (!this.is_moving[dir]) {
             this.is_moving[dir] = true;
         }
@@ -108,21 +119,51 @@ class Player extends WorldObject
 
     MoveUp()
     {
-        this.Move["up"];
+        this.Move("up");
     }
 
     MoveDown()
     {
-        this.Move["down"];
+        this.Move("down");
     }
 
     MoveLeft()
     {
-        this.Move["left"];
+        this.Move("left");
     }
 
     MoveRight()
     {
-        this.Move["right"];
+        this.Move("right");
+    }
+
+    On(event: string)
+    {
+        switch (event) {
+            case "input.player.move.up":
+                this.MoveUp();
+                break;
+            case "input.player.move.down":
+                this.MoveDown();
+                break;
+            case "input.player.move.left":
+                this.MoveLeft();
+                break;
+            case "input.player.move.right":
+                this.MoveRight();
+                break;
+            case "input.player.stop.up":
+                this.StopUp();
+                break;
+            case "input.player.stop.down":
+                this.StopDown();
+                break;
+            case "input.player.stop.left":
+                this.StopLeft();
+                break;
+            case "input.player.stop.right":
+                this.StopRight();
+                break;
+        }
     }
 }
