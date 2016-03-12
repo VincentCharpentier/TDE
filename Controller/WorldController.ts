@@ -3,7 +3,6 @@ class WorldController
 {
     // TODO: needs to be private
     public static objects: Array<WorldObject> = [];
-    private static agents: Array<Agent> = [];
     public static player: Player;
 
     public static Init()
@@ -15,19 +14,15 @@ class WorldController
 
     public static RegisterObject(obj: WorldObject): void
     {
-        if (Agent.prototype.isPrototypeOf(obj)) {
-            this.agents.push(<Agent>obj);
-        }
         this.objects.push(obj);
     }
 
 
-    public static Turn()
+    public static Tick(dt: number)
     {
         // Agents act
-        for (var i = 0; i < WorldController.agents.length; i++) {
-            WorldController.agents[i].BeforeAct();
-            WorldController.agents[i].Act();
+        for (var i = 0; i < WorldController.objects.length; i++) {
+            WorldController.objects[i].Tick(dt);
         }
     }
 

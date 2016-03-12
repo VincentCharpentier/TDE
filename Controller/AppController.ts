@@ -34,6 +34,7 @@ class AppController
      */
     public static Tick()
     {
+        // On evite de dépasser le nombre max de FPS
         var dt = new Date().getTime() - this._lastTick;
 
         var delay = 0;
@@ -44,13 +45,17 @@ class AppController
         setTimeout(() =>
         {
             this._lastTick = new Date().getTime();
-            CanvasController.Draw();
+            this.TickAll(dt + delay);
             this.Tick();
         }, delay);
     }
     private static _lastTick: number = 0;
     private static _targetDelta: number;
 
-
+    private static TickAll(dt: number)
+    {
+        WorldController.Tick(dt);
+        CanvasController.Draw();
+    }
 
 }

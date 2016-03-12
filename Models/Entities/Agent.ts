@@ -1,6 +1,7 @@
 ﻿abstract class Agent extends WorldObject
 {
     protected _canThink = true;
+
     /**
      * Agent consider what action it should take
      */
@@ -17,6 +18,12 @@
         }
     }
 
+    public Tick(dt: number)
+    {
+        this.BeforeAct();
+        this.Act();
+    }
+
     /**
      * Agent act depending on his goal (defined at last "Think" call)
      */
@@ -27,11 +34,6 @@
 class Ennemy extends Agent
 {
     public SetupShape()
-    {
-
-    }
-
-    Tick(dt: number): void
     {
 
     }
