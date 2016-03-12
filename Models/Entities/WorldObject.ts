@@ -1,22 +1,30 @@
 
 abstract class WorldObject
 {
+    private static _nextId = 1;
+    public id: number;
     public coord: Coord;
     public rotation: number;
     protected shape: FullShape;
     public bbox: BBox;
+    public speed: Coord;
 
     constructor()
     {
+        this.id = WorldObject._nextId++;
         this.shape = new FullShape();
         this.SetupShape();
+        WorldController.RegisterObject(this);
     }
 
     abstract SetupShape(): void;
 
-    Draw(ctx: CanvasRenderingContext2D)
+    // dt: time since last frame
+    abstract Tick(dt: number): void;
+
+    Draw(ctx: CanvasRenderingContext2D, origin: Coord)
     {
-        this.shape.Draw(ctx, this.coord, this.rotation);
+        this.shape.Draw(ctx, origin, this.coord, this.rotation);
     }
 
     GetSurroundingObjects(radius: number): Array<WorldObject>
@@ -30,6 +38,8 @@ abstract class WorldObject
     {
         return CollisionHelper.isCollision(this, object);
     }
+
+    On(event: string): void { }
 }
 
 enum BBox_Type
@@ -65,9 +75,11 @@ class CollisionHelper
         return this.EvalCollision(obj1, obj2);;
     }
 
-    private static GetCollisionMode(obj1: WorldObject, obj2: WorldObject): Collision_Mode
+    private static GetCollisionMode(obj1: WorldObject,
+        obj2: WorldObject): Collision_Mode
     {
-        if (obj1.bbox.type == BBox_Type.None || obj2.bbox.type == BBox_Type.None) {
+        if (obj1.bbox.type == BBox_Type.None
+            || obj2.bbox.type == BBox_Type.None) {
             return Collision_Mode.None;
         }
         switch (obj1.bbox.type) {
@@ -97,8 +109,12 @@ class CollisionHelper
         switch (mode) {
             case Collision_Mode.Circle_v_Circle:
                 var dist = this.DistBeetween(
-                    new Coord((obj1.coord.x + obj1.bbox._size), (obj1.coord.y + obj1.bbox._size)),
-                    new Coord((obj2.coord.x + obj2.bbox._size), (obj2.coord.y + obj2.bbox._size))
+                    new Coord(
+                        (obj1.coord.x + obj1.bbox._size),
+                        (obj1.coord.y + obj1.bbox._size)),
+                    new Coord(
+                        (obj2.coord.x + obj2.bbox._size),
+                        (obj2.coord.y + obj2.bbox._size))
                 );
                 if (dist < (obj1.bbox._size + obj2.bbox._size)) {
                     return true;
@@ -107,15 +123,17 @@ class CollisionHelper
             case Collision_Mode.Circle_v_Rect:
                 // TODO
                 /*
-                var rect: WorldObject = (obj1.bbox.type == BBox_Type.Rect ? obj1 : obj2),
-                    cirle: WorldObject = (obj1.bbox.type == BBox_Type.Rect ? obj2 : obj1);
+                var rect: WorldObject =
+                    (obj1.bbox.type == BBox_Type.Rect ? obj1 : obj2);
+                var cirle: WorldObject =
+                    (obj1.bbox.type == BBox_Type.Rect ? obj2 : obj1);
                 // look for useful corner in rect
                 var corner: Coord;
                 if (cirle.coord.x + cirle.bbox._radius < rect.coord.x + rect.bbox._width / 2) {
                     // LEFT
                     if (cirle.coord.y + cirle.bbox._radius < rect.coord.y + rect.bbox._width / 2) {
                         // TOP - LEFT
-                        corner =
+                        // corner =
                     } else {
                         // BOTTOM - LEFT
                     }

@@ -5,23 +5,26 @@
     <meta name="viewport" content="width=device-width" />
     <title>TD Evolved</title>
     <!-- Styles -->
-    <link rel="stylesheet" href="~/css/style.css"></link>
+    <link rel="stylesheet" href="css/style.css"></link>
     <!-- Utilities -->
-    <script type="text/javascript" src="~/js/Models/Utils/Config.js"></script>
+    <script type="text/javascript" src="js/Models/Utils/Config.js"></script>
+    <script type="text/javascript" src="js/Models/Graphics/Shape.js"></script>
     <!-- Controllers -->
-    <script type="text/javascript" src="~/js/Controller/AppController.js"></script>
-    <script type="text/javascript" src="~/js/Controller/CanvasController.js"></script>
-    <script type="text/javascript" src="~/js/Controller/UIController.js"></script>
-    <script type="text/javascript" src="~/js/Controller/WorldController.js"></script>
+    <script type="text/javascript" src="js/Controller/AppController.js"></script>
+    <script type="text/javascript" src="js/Controller/CanvasController.js"></script>
+    <script type="text/javascript" src="js/Controller/UIController.js"></script>
+    <script type="text/javascript" src="js/Controller/InputController.js"></script>
+    <script type="text/javascript" src="js/Controller/WorldController.js"></script>
     <!-- Models -->
-    <script type="text/javascript" src="~/js/Models/Graphics/Shape.js"></script>
-    <script type="text/javascript" src="~/js/Models/Entities/WorldObject.js"></script>
-    <script type="text/javascript" src="~/js/Models/Entities/Agent.js"></script>
-    <script type="text/javascript" src="~/js/Models/Entities/Turret.js"></script>
+    <script type="text/javascript" src="js/Models/Graphics/Shape.js"></script>
+    <script type="text/javascript" src="js/Models/Entities/WorldObject.js"></script>
+    <script type="text/javascript" src="js/Models/Entities/Player.js"></script>
+    <script type="text/javascript" src="js/Models/Entities/Agent.js"></script>
+    <script type="text/javascript" src="js/Models/Entities/Turret.js"></script>
 </head>
 <body>
     <div id="canvasContainer">
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas" tabindex="1"></canvas>
     </div>
     <div id="Overframe">
         <div id="Menu" style="display:none">

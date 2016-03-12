@@ -27,8 +27,14 @@ class CanvasController
 
     private static _lastDraw: number = 0;
     public static fps: number = 0;
+
     public static Draw(): void
     {
+        var drawOrigin: Coord = new Coord(
+            WorldController.player.coord.x - this.canvas.width / 2,
+            WorldController.player.coord.y - this.canvas.height / 2
+        );
+
         var time = new Date().getTime();
         this.fps = 1000 / (time - this._lastDraw);
         this._lastDraw = new Date().getTime();
@@ -38,7 +44,9 @@ class CanvasController
         this.ctx.rect(0, 0, Config.World.Map.SIZE, Config.World.Map.SIZE);
         this.ctx.fill();
         for (var i = 0; i < WorldController.objects.length; i++) {
-            WorldController.objects[i].Draw(this.ctx);
+            WorldController.objects[i].Draw(this.ctx, drawOrigin);
         }
+
+        // WorldController.player.Draw(this.ctx, dra);
     }
 }

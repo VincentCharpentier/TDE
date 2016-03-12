@@ -17,4 +17,11 @@
         // time between think process (ms)
         THINK_DELAY: 200
     };
+
+    public static Player = {
+        SIZE: 10,
+        MAX_SPEED: 2, // px per sec
+        ACCELERATION: 0.4, // (px per sec) per sec
+        DRAG_FACTOR: 0.3 // [0:1]
+    };
 }

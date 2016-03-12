@@ -1,6 +1,7 @@
 ﻿abstract class Agent extends WorldObject
 {
     protected _canThink = true;
+
     /**
      * Agent consider what action it should take
      */
@@ -15,6 +16,12 @@
                 this._canThink = true;
             }, Config.Agent.THINK_DELAY);
         }
+    }
+
+    public Tick(dt: number)
+    {
+        this.BeforeAct();
+        this.Act();
     }
 
     /**
