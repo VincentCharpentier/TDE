@@ -6,13 +6,9 @@ class Player extends WorldObject
     // For future multiplayer mode
     private _isLocalPlayer: boolean;
 
-    constructor(isLocalPlayer_: boolean)
+    constructor(coord: Coord, isLocalPlayer_: boolean)
     {
-        super();
-        this.coord = new Coord(
-            Math.round(Math.random() * CanvasController.viewport.width),
-            Math.round(Math.random() * CanvasController.viewport.height)
-        );
+        super(coord);
         this.speed = new Coord(0, 0);
         this._isLocalPlayer = isLocalPlayer_;
         if (this._isLocalPlayer) {
@@ -87,7 +83,9 @@ class Player extends WorldObject
             // 3. Update coord
             this.coord.x += this.speed.x;
             this.coord.y += this.speed.y;
+            this.UpdateChunk();
         }
+        WorldController.player = this;
     }
 
     StopUp()

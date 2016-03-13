@@ -10,9 +10,14 @@ class Coord
         this.y = y_;
     }
 
-    toPolar(origin: Coord): PolarCoord
+    public toPolar(origin: Coord): PolarCoord
     {
         return new PolarCoord(origin, this);
+    }
+
+    public toString()
+    {
+        return "(" + this.x + "," + this.y + ")";
     }
 }
 
@@ -58,6 +63,7 @@ class PolarCoord
 }
 
 // TESTS cartesians => polar => cartesians
+/*
 window.addEventListener("load", function()
 {
     var origin = new Coord(100, 200);
@@ -96,3 +102,4 @@ window.addEventListener("load", function()
     test(new Coord(-250, -378));
     test(new Coord(10, 78));
 });
+*/

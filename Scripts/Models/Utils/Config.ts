@@ -8,9 +8,13 @@
     public static World = {
         // Item max width
         ITEM_MAX_WIDTH: 50,
+        CHUNK_SIZE: 100,
         Map: {
-            SIZE: 1000
-        }
+            // NB CHUNKS
+            NB_CHUNK_PER_EDGE: 50
+        },
+        LIVING_ZONE_SIZE: 700,
+        RENDER_ZONE: 300
     };
 
     public static Agent = {
@@ -23,5 +27,15 @@
         MAX_SPEED: 2, // px per sec
         ACCELERATION: 0.4, // (px per sec) per sec
         DRAG_FACTOR: 0.3 // [0:1]
+    };
+
+
+    public static Debug = {
+        Draw: {
+            CHUNKS: true,
+            CHUNKS_COLOR: "#F00",
+            CURRENT_CHUNK: true,
+            CURRENT_CHUNK_COLOR: "rgba(0,0,255,0.2)"
+        }
     };
 }
