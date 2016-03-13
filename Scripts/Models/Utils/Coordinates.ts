@@ -58,12 +58,11 @@ class PolarCoord
 }
 
 // TESTS cartesians => polar => cartesians
-/*
 window.addEventListener("load", function()
 {
+    var origin = new Coord(100, 200);
     var test = (a: Coord) =>
     {
-        var origin = new Coord(100, 200);
         var zone = -1;
         if (a.x >= origin.x) {
             if (a.y >= origin.y) {
@@ -97,4 +96,3 @@ window.addEventListener("load", function()
     test(new Coord(-250, -378));
     test(new Coord(10, 78));
 });
-*/
