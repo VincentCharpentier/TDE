@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TD Evolved</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css"></link>
+    <!-- Utilities -->
+    <script type="text/javascript" src="js/Models/Utils/Config.js"></script>
+    <script type="text/javascript" src="js/Models/Utils/Coordinates.js"></script>
+    <!-- Controllers -->
+    <script type="text/javascript" src="js/Controller/AppController.js"></script>
+    <script type="text/javascript" src="js/Controller/ChunkController.js"></script>
+    <script type="text/javascript" src="js/Controller/CanvasController.js"></script>
+    <script type="text/javascript" src="js/Controller/UIController.js"></script>
+    <script type="text/javascript" src="js/Controller/InputController.js"></script>
+    <script type="text/javascript" src="js/Controller/WorldController.js"></script>
+    <!-- Models -->
+    <script type="text/javascript" src="js/Models/Chunk.js"></script>
+    <script type="text/javascript" src="js/Models/Graphics/Shape.js"></script>
+    <script type="text/javascript" src="js/Models/Entities/WorldObject.js"></script>
+    <script type="text/javascript" src="js/Models/Entities/Solids/Alterables/Livings/Player.js"></script>
+    <script type="text/javascript" src="js/Models/Entities/Agent.js"></script>
+    <script type="text/javascript" src="js/Models/Entities/Solids/Alterables/Buildings/Turret.js"></script>
+</head>
+<body>
+    <div id="canvasContainer">
+        <canvas id="canvas" tabindex="1"></canvas>
+    </div>
+    <div id="Overframe">
+        <div id="Menu" style="display:none">
+            <div id="Start">
+                <div class="menu_option">Start</div>
+            </div>
+        </div>
+        <div id="console">
+            <div id="fps" class="console_line" title="FPS"></div>
+        </div>
+    </div>
+</body>
+</html>
