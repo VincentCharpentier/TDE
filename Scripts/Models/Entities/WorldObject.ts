@@ -3,15 +3,18 @@ abstract class WorldObject
 {
     private static _nextId = 1;
     public id: number;
+    public chunk_id: number = null;
+
     public coord: Coord;
     public rotation: number;
     protected shape: FullShape;
     public bbox: BBox;
     public speed: Coord;
 
-    constructor()
+    constructor(coord: Coord)
     {
         this.id = WorldObject._nextId++;
+        this.coord = coord;
         this.shape = new FullShape();
         this.SetupShape();
         WorldController.RegisterObject(this);
@@ -22,15 +25,19 @@ abstract class WorldObject
     // dt: time since last frame
     abstract Tick(dt: number): void;
 
-    Draw(ctx: CanvasRenderingContext2D, origin: Coord)
+    Draw(ctx: CanvasRenderingContext2D)
     {
-        this.shape.Draw(ctx, origin, this.coord, this.rotation);
+        this.shape.Draw(ctx, this.coord, this.rotation);
     }
 
     GetSurroundingObjects(radius: number): Array<WorldObject>
     {
-        // TODO
-        return [];
+        return WorldController.GetObjectsInArea(this.coord, radius);
+    }
+
+    public UpdateChunk(): void
+    {
+        WorldController.UpdateObjectChunk(this);
     }
 
 

@@ -7,10 +7,10 @@
         this.parts.push(shape);
     }
 
-    public Draw(ctx: CanvasRenderingContext2D, origin: Coord, at: Coord, rotation: number): void
+    public Draw(ctx: CanvasRenderingContext2D, at: Coord, rotation: number): void
     {
         for (var i = 0; i < this.parts.length; i++) {
-            this.parts[i].Draw(ctx, origin, at, rotation);
+            this.parts[i].Draw(ctx, at, rotation);
         }
     }
 }
@@ -48,7 +48,7 @@ abstract class Shape
         this.localRotation = rotation;
     }
 
-    abstract Draw(ctx: CanvasRenderingContext2D, origin: Coord, at: Coord, rotation: number): void
+    abstract Draw(ctx: CanvasRenderingContext2D, at: Coord, rotation: number): void
 }
 
 class Square extends Shape
@@ -61,10 +61,10 @@ class Square extends Shape
         this.width = width_;
     }
 
-    public Draw(ctx: CanvasRenderingContext2D, origin: Coord, at: Coord, rotation: number = 0): void
+    public Draw(ctx: CanvasRenderingContext2D, at: Coord, rotation: number = 0): void
     {
-        var finalCoord: Coord = new Coord(at.x + this.localCoord.x - origin.x, at.y + this.localCoord.y - origin.y),
-            finalRotation = (rotation + this.localRotation),
+        var finalCoord: Coord = new Coord(at.x + this.localCoord.x - CanvasController.currentOffset.x, at.y + this.localCoord.y - CanvasController.currentOffset.y);
+        var finalRotation = (rotation + this.localRotation),
             halfWidth = this.width / 2;
         // first save the untranslated/unrotated context
         ctx.save();
@@ -92,9 +92,9 @@ class Circle extends Shape
         this.radius = radius_;
     }
 
-    public Draw(ctx: CanvasRenderingContext2D, origin: Coord, at: Coord, rotation: number = 0): void
+    public Draw(ctx: CanvasRenderingContext2D, at: Coord, rotation: number = 0): void
     {
-        var finalCoord: Coord = new Coord(at.x + this.localCoord.x - origin.x, at.y + this.localCoord.y - origin.y);
+        var finalCoord: Coord = new Coord(at.x + this.localCoord.x - CanvasController.currentOffset.x, at.y + this.localCoord.y - CanvasController.currentOffset.y);
         ctx.beginPath();
         ctx.arc(finalCoord.x + this.radius, finalCoord.y + this.radius, this.radius, 0, 2 * Math.PI, false);
         ctx.fillStyle = this.material.GetColorString();

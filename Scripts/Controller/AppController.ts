@@ -17,15 +17,6 @@ class AppController
         WorldController.Init();
         this._targetDelta = 1000 / Config.View.MAX_FPS;
         this.Tick();
-
-        // TODO : REMOVE
-        for (var i = 0; i < 3; i++) {
-            var t = new Turret();
-            t.coord = new Coord(
-                Math.round(Math.random() * CanvasController.viewport.width),
-                Math.round(Math.random() * CanvasController.viewport.height)
-            );
-        }
     }
 
     /**
