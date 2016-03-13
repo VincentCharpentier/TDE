@@ -3,6 +3,7 @@ class WorldController
 {
     // TODO: needs to be private
     public static objects: Array<WorldObject> = [];
+    // Local player
     public static player: Player;
 
     public static Init()

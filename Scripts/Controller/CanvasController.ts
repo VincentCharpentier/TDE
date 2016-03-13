@@ -46,7 +46,5 @@ class CanvasController
         for (var i = 0; i < WorldController.objects.length; i++) {
             WorldController.objects[i].Draw(this.ctx, drawOrigin);
         }
-
-        // WorldController.player.Draw(this.ctx, dra);
     }
 }

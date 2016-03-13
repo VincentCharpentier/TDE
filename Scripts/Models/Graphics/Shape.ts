@@ -15,18 +15,6 @@
     }
 }
 
-class Coord
-{
-    public x: number;
-    public y: number;
-
-    constructor(x_: number, y_: number)
-    {
-        this.x = x_;
-        this.y = y_;
-    }
-}
-
 class ShapeFactory
 {
     public static Square(material: ShapeMaterial, coord: Coord, width: number, rotation: number): Square
