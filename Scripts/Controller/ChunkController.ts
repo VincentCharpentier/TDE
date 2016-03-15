@@ -28,10 +28,17 @@ class ChunkController
         var new_chunk = ChunkController.GetChunkForCoord(obj.coord);
         if (obj.chunk_id !== new_chunk.id) {
             if (obj.chunk_id !== null) {
-                ChunkController.GetChunkFromId(obj.chunk_id)
-                    .UnregisterObject(obj);
+                ChunkController.UnregisterObject(obj);
             }
             new_chunk.RegisterObject(obj);
+        }
+    }
+
+    public static UnregisterObject(obj: WorldObject): void
+    {
+        if (obj.chunk_id !== null) {
+            ChunkController.GetChunkFromId(obj.chunk_id)
+                .UnregisterObject(obj);
         }
     }
 

@@ -8,7 +8,6 @@ abstract class WorldObject
     public coord: Coord;
     public rotation: number;
     protected shape: FullShape;
-    public bbox: BBox;
     public speed: Coord;
 
     constructor(coord: Coord)
@@ -40,13 +39,12 @@ abstract class WorldObject
         WorldController.UpdateObjectChunk(this);
     }
 
-
-    CollideWithObject(object: WorldObject): boolean
-    {
-        return CollisionHelper.isCollision(this, object);
-    }
-
     On(event: string): void { }
+
+    public Destroy(): void
+    {
+        WorldController.UnregisterObject(this);
+    }
 }
 
 enum BBox_Type
@@ -77,13 +75,13 @@ enum Collision_Mode
 
 class CollisionHelper
 {
-    public static isCollision(obj1: WorldObject, obj2: WorldObject)
+    public static isCollision(obj1: SolidObject, obj2: SolidObject)
     {
         return this.EvalCollision(obj1, obj2);;
     }
 
-    private static GetCollisionMode(obj1: WorldObject,
-        obj2: WorldObject): Collision_Mode
+    private static GetCollisionMode(obj1: SolidObject,
+        obj2: SolidObject): Collision_Mode
     {
         if (obj1.bbox.type == BBox_Type.None
             || obj2.bbox.type == BBox_Type.None) {
@@ -110,7 +108,7 @@ class CollisionHelper
         throw "Unable to evaluate collision";
     }
 
-    private static EvalCollision(obj1: WorldObject, obj2: WorldObject): boolean
+    private static EvalCollision(obj1: SolidObject, obj2: SolidObject): boolean
     {
         var mode = this.GetCollisionMode(obj1, obj2);
         switch (mode) {
