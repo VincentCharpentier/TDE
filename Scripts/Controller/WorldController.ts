@@ -11,12 +11,12 @@ class WorldController
             var t = new Turret(new Coord(
                 Math.round(Math.random() * CanvasController.viewport.width),
                 Math.round(Math.random() * CanvasController.viewport.height)
-            ));
+            ), 1, 0);
         }
 
         new Dog(new Coord(
-            WorldController.player.coord.x + 50,
-            WorldController.player.coord.y + 50
+            WorldController.player.coord.x + 250,
+            WorldController.player.coord.y + 250
         ));
     }
 
@@ -68,7 +68,10 @@ class WorldController
         var chunks = ChunkController.GetChunksInZone(coord, dist);
         // Agents act
         for (var c = 0; c < chunks.length; c++) {
-            result = result.concat(chunks[c].GetObjects());
+            result = result.concat(chunks[c].GetObjects().filter(o =>
+            {
+                return o.coord.toPolar(coord).dist < dist;
+            }));
         }
         return result;
     }

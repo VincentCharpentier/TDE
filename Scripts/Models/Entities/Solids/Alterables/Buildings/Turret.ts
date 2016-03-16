@@ -1,4 +1,4 @@
-﻿class Turret extends Agent
+﻿class Turret extends AgentObject
 {
     // TODO : in config
     public static TURRET_SIZE: number = 20;
@@ -21,6 +21,16 @@
     }
 
     Act(): void
+    {
+
+    }
+
+    public OnDie()
+    {
+
+    }
+
+    public SetupBbox()
     {
 
     }

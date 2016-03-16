@@ -8,7 +8,6 @@ abstract class WorldObject
     public coord: Coord;
     public rotation: number;
     protected shape: FullShape;
-    public speed: Coord;
 
     constructor(coord: Coord)
     {

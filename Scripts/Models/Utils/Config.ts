@@ -14,7 +14,7 @@
             NB_CHUNK_PER_EDGE: 50
         },
         LIVING_ZONE_SIZE: 700,
-        RENDER_ZONE: 300
+        RENDER_ZONE: 400
     };
 
     public static Agent = {
@@ -22,11 +22,13 @@
         THINK_DELAY: 200
     };
 
+    public static Moves = {
+        ACCELERATION: 4, // (px per sec) per sec
+        DRAG_FACTOR: 0.7 // [0:1]
+    };
+
     public static Player = {
-        SIZE: 10,
-        MAX_SPEED: 2, // px per sec
-        ACCELERATION: 0.4, // (px per sec) per sec
-        DRAG_FACTOR: 0.3 // [0:1]
+        SIZE: 10
     };
 
 

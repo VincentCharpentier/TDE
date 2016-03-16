@@ -3,14 +3,12 @@ abstract class AlterableObject extends SolidObject
     private health: number;
     protected max_health: number;
 
-    constructor(coord: Coord)
+    constructor(coord: Coord, maxHealth: number)
     {
         super(coord);
-        this.SetupMaxHealth();
+        this.max_health = maxHealth;
         this.health = this.max_health;
     }
-
-    abstract SetupMaxHealth(): void
 
     abstract OnDie(): void;
 

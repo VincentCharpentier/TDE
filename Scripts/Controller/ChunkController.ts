@@ -16,11 +16,12 @@ class ChunkController
 
     private static GetChunkFromId(id_chunk: number): Chunk
     {
-        return ChunkController.chunks
-            .filter((c) =>
-            {
-                return c.id === id_chunk;
-            })[0];
+        for (var i = 0; i < ChunkController.chunks.length; i++) {
+            if (ChunkController.chunks[i].id === id_chunk) {
+                return ChunkController.chunks[i];
+            }
+        }
+        return null;
     }
 
     public static RegisterObject(obj: WorldObject): void
@@ -53,10 +54,13 @@ class ChunkController
     public static GetChunkForCoord(coord: Coord): Chunk
     {
         var metaCoord = ChunkController.GetMetaCoordFromCoord(coord);
-        return ChunkController.chunks.filter((e) =>
-        {
-            return e.metaCoord.x === metaCoord.x && e.metaCoord.y === metaCoord.y;
-        })[0];
+        for (var i = 0; i < ChunkController.chunks.length; i++) {
+            if (ChunkController.chunks[i].metaCoord.x === metaCoord.x
+                && ChunkController.chunks[i].metaCoord.y === metaCoord.y) {
+                return ChunkController.chunks[i];
+            }
+        }
+        return null;
     }
 
     public static GetChunksInZone(coord: Coord, radius: number): Array<Chunk>
