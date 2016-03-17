@@ -32,29 +32,45 @@ class CanvasController
 
     public static Draw(): void
     {
+        var time = performance.now();
+        this.fps = 1000 / (time - this._lastDraw);
+        this._lastDraw = time;
+
+        DebugController.StartTimer("Draw_1");
         CanvasController.currentOffset = new Coord(
             WorldController.player.coord.x - this.canvas.width / 2,
             WorldController.player.coord.y - this.canvas.height / 2
         );
 
-        var time = new Date().getTime();
-        this.fps = 1000 / (time - this._lastDraw);
-        this._lastDraw = new Date().getTime();
-
         var size = Config.World.CHUNK_SIZE * Config.World.Map.NB_CHUNK_PER_EDGE;
-        this.ctx.clearRect(0, 0, size, size);
+        // this.ctx.clearRect(0, 0, size, size);
         this.ctx.fillStyle = ColorProcessor.GetColor(Color.GREEN, ColorConfig.DARK);
-        this.ctx.rect(0, 0, size, size);
-        this.ctx.fill();
+        this.ctx.fillRect(0, 0, size, size);
+        // this.ctx.fill();
+        DebugController.StopTimer("Draw_1");
+        DebugController.StartTimer("Draw_2");
 
         // DRAW Objects
-        var objects = WorldController.GetObjectsInArea(
-            WorldController.player.coord,
-            Config.World.RENDER_ZONE);
+        // var objects = WorldController.GetObjectsInArea(
+        //     WorldController.player.coord,
+        //     Config.World.RENDER_ZONE);
         // console.log(objects.length);
-        for (var i = 0; i < objects.length; i++) {
-            objects[i].Draw(this.ctx);
-        }
+        WorldController.GetObjectsInArea(
+            WorldController.player.coord,
+            Config.World.RENDER_ZONE, false)
+            .forEach(obj =>
+            {
+                obj.Draw(this.ctx);
+
+            });
+        // for (let obj of WorldController.GetObjectsInArea(
+        //     WorldController.player.coord, Config.World.RENDER_ZONE)) {
+        // }
+        // for (var i = 0; i < objects.length; i++) {
+        //     objects[i].Draw(this.ctx);
+        // }
+        DebugController.StopTimer("Draw_2");
+        DebugController.StartTimer("Draw_3");
 
         // Draw DEBUG
         if (Config.Debug.Draw.CURRENT_CHUNK) {
@@ -63,5 +79,6 @@ class CanvasController
         if (Config.Debug.Draw.CHUNKS) {
             ChunkController.DrawCurrentChunk(this.ctx);
         }
+        DebugController.StopTimer("Draw_3");
     }
 }

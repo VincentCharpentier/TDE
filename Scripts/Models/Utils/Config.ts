@@ -8,7 +8,7 @@
     public static World = {
         // Item max width
         ITEM_MAX_WIDTH: 50,
-        CHUNK_SIZE: 100,
+        CHUNK_SIZE: 300,
         Map: {
             // NB CHUNKS
             NB_CHUNK_PER_EDGE: 50

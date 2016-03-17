@@ -16,37 +16,53 @@ class AppController
         InputController.Init();
         WorldController.Init();
         this._targetDelta = 1000 / Config.View.MAX_FPS;
-        this.Tick();
+        setInterval(() => { AppController.Tick(); }, this._targetDelta);
+        setInterval(() => { DebugController.EchoConsole(); }, 5000);
     }
 
+    private static _tickdone = true;
     /**
      *
      * @param dt time elasped since last tick (ms)
      */
     public static Tick()
     {
-        // On evite de dépasser le nombre max de FPS
-        var dt = new Date().getTime() - this._lastTick;
+        if (this._tickdone) {
+            DebugController.StartTimer("MainTick");
+            this._tickdone = false;
+            // On evite de dépasser le nombre max de FPS
+            var dt = performance.now() - this._lastTick;
 
-        var delay = 0;
-        if (dt < this._targetDelta) {
-            delay = this._targetDelta - dt;
+            var delay = 0;
+            if (dt < this._targetDelta) {
+                delay = this._targetDelta - dt;
+            }
+
+            setTimeout(() =>
+            {
+                this._lastTick = performance.now();
+                this.TickAll(dt + delay);
+                this._tickdone = true;
+                // this.Tick();
+            }, delay);
+            DebugController.StopTimer("MainTick");
         }
-
-        setTimeout(() =>
-        {
-            this._lastTick = new Date().getTime();
-            this.TickAll(dt + delay);
-            this.Tick();
-        }, delay);
     }
     private static _lastTick: number = 0;
     private static _targetDelta: number;
 
     private static TickAll(dt: number)
     {
+        DebugController.StartTimer("Tick");
+
         WorldController.Tick(dt);
+
+        DebugController.StopTimer("Tick");
+        DebugController.StartTimer("Draw");
+
         CanvasController.Draw();
+
+        DebugController.StopTimer("Draw");
     }
 
 }

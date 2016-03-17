@@ -4,29 +4,6 @@ class WorldController
     // Local player
     public static player: Player;
 
-    private static DebugScript()
-    {
-        /* TODO : remove */
-        for (var i = 0; i < 20; i++) {
-            var t = new Turret(new Coord(
-                Math.round(Math.random() * CanvasController.viewport.width),
-                Math.round(Math.random() * CanvasController.viewport.height)
-            ), 1, 0);
-        }
-
-        new Dog(new Coord(
-            WorldController.player.coord.x + 250,
-            WorldController.player.coord.y + 250
-        ));
-
-        var tri = new TriangleMesh(
-            new Coord(0, 0),
-            new Coord(22, 0),
-            new Coord(0, 22)
-        );
-        console.log(tri);
-    }
-
     public static Init()
     {
         ChunkController.Init();
@@ -39,7 +16,9 @@ class WorldController
             Math.round(Math.random() * CanvasController.viewport.height)
         );
         WorldController.player = new Player(playerInitialCoord, true);
-        WorldController.DebugScript();
+
+
+        DebugController.DebugInitScript();
     }
 
     public static RegisterObject(obj: WorldObject): void
@@ -68,18 +47,22 @@ class WorldController
         }
     }
 
-    public static GetObjectsInArea(coord: Coord, dist: number): Array<WorldObject>
+    public static GetObjectsInArea(coord: Coord, dist: number, precise: boolean = true): Array<WorldObject>
     {
         var result = new Array<WorldObject>();
 
         var chunks = ChunkController.GetChunksInZone(coord, dist);
         // Agents act
         for (var c = 0; c < chunks.length; c++) {
-            result = result.concat(chunks[c].GetObjects().filter(o =>
+            result = result.concat(chunks[c].GetObjects());
+        }
+        if (precise) {
+            return result.filter(o =>
             {
                 return o.coord.toPolar(coord).dist < dist;
-            }));
+            });
+        } else {
+            return result;
         }
-        return result;
     }
 }
