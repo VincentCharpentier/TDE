@@ -18,6 +18,13 @@ class WorldController
             WorldController.player.coord.x + 250,
             WorldController.player.coord.y + 250
         ));
+
+        var tri = new TriangleMesh(
+            new Coord(0, 0),
+            new Coord(22, 0),
+            new Coord(0, 22)
+        );
+        console.log(tri);
     }
 
     public static Init()
