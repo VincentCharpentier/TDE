@@ -1,6 +1,48 @@
 class NavMesh
 {
     private meshes: Array<TriangleMesh>;
+    private chunk: Chunk;
+
+    constructor(_chunk: Chunk)
+    {
+        this.chunk = _chunk;
+        this.Generate();
+    }
+
+    private AddMesh(mesh: TriangleMesh)
+    {
+        this.meshes.push(mesh);
+    }
+
+    private Clear()
+    {
+        this.meshes = new Array();
+    }
+
+    public Generate()
+    {
+        this.Clear();
+        // points to process
+        var todo: Array<Coord> = new Array();
+        // add chunk coordinates
+        todo.push(this.chunk.coord);
+        todo.push(new Coord(
+            this.chunk.coord.x + Config.World.CHUNK_SIZE,
+            this.chunk.coord.y
+        ));
+        todo.push(new Coord(
+            this.chunk.coord.x + Config.World.CHUNK_SIZE,
+            this.chunk.coord.y + Config.World.CHUNK_SIZE
+        ));
+        todo.push(new Coord(
+            this.chunk.coord.x,
+            this.chunk.coord.y + Config.World.CHUNK_SIZE
+        ));
+
+        var pt1: Coord = todo.shift();
+
+
+    }
 }
 
 class TriangleMesh
@@ -56,7 +98,7 @@ class TriangleMesh
         return s > 0 && t > 0 && (s + t) < 2 * this.area;
     }
 
-    public getNavPoints(): Array<Coord>
+    public GetNavPoints(): Array<Coord>
     {
         return this.edgePoints.concat(this.pt1, this.pt2, this.pt3);
     }

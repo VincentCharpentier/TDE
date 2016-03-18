@@ -112,7 +112,11 @@ abstract class MovableObject extends AlterableObject
         this.coord.x += this.speed.x;
         this.coord.y += this.speed.y;
         this.UpdateChunk();
+    }
 
+    public IsObstacle(): boolean
+    {
+        return false;
     }
 }
 

@@ -14,4 +14,9 @@ abstract class SolidObject extends WorldObject
     {
         return CollisionHelper.isCollision(this, object);
     }
+
+    public IsObstacle(): boolean
+    {
+        return true;
+    }
 }

@@ -39,7 +39,7 @@ class Chunk
         }
     }
 
-    public contains(coord: Coord): boolean
+    public Contains(coord: Coord): boolean
     {
         if (this.coord.x <= coord.x
             && this.coord.x + Config.World.CHUNK_SIZE > coord.x
@@ -53,6 +53,14 @@ class Chunk
     public GetObjects(): Array<WorldObject>
     {
         return this.objects;
+    }
+
+    public GetObstacles(): Array<SolidObject>
+    {
+        return <Array<SolidObject>>this.objects.filter(obj =>
+        {
+            return obj instanceof SolidObject && (<SolidObject>obj).IsObstacle()
+        });
     }
 
     public Draw(ctx: CanvasRenderingContext2D): void

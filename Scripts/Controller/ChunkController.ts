@@ -54,6 +54,11 @@ class ChunkController
     public static GetChunkForCoord(coord: Coord): Chunk
     {
         var metaCoord = ChunkController.GetMetaCoordFromCoord(coord);
+        return this.GetChunkForMetaCoord(metaCoord);
+    }
+
+    public static GetChunkForMetaCoord(metaCoord: Coord): Chunk
+    {
         for (var i = 0; i < ChunkController.chunks.length; i++) {
             if (ChunkController.chunks[i].metaCoord.x === metaCoord.x
                 && ChunkController.chunks[i].metaCoord.y === metaCoord.y) {

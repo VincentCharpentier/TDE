@@ -123,4 +123,9 @@ class Player extends MovableObject
                 break;
         }
     }
+
+    public IsObstacle(): boolean
+    {
+        return false;
+    }
 }
